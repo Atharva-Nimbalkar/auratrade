@@ -1,6 +1,8 @@
 import React from 'react'
 import {Card} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
+import Rating from './Rating';
+
 const Product = ({product}) => {
   return (
     <Card className="my-3 p-3 rounded">
@@ -14,10 +16,15 @@ image within the Card component, in this case, at the top.  */}
 
         <Card.Body>
             <Link to={`/product/${product._id}`}>
-                <Card.Title as="div">
+            {/* product-title class added to so card will not shrink irrespective of change in component elements*/}
+                <Card.Title as="div" className='product-title'>
                     <strong>{product.name}</strong>
                 </Card.Title>
             </Link>
+
+            <Card.Text as="div">
+                <Rating value={product.rating} text={`${product.numReviews}reviews` }/>
+            </Card.Text>
            {/* The `<Card.Text as="h3">` element is rendering a text element within a Bootstrap Card
            component. The `as="h3"` prop is specifying that the text should be rendered as an HTML
            `<h3>` element, which is a heading element with a specific semantic meaning in HTML.  */}
