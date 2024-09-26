@@ -12,6 +12,7 @@ import './assets/styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import HomeScreen from './screens/HomeScreen';
+import ProductScreen from './screens/ProductScreen';
 
 /* The `const router=createBrowserRouter()` creating a router instance using the
 `createBrowserRouter`. This function is typically used to create a router object that can be used to define the routing configuration for a
@@ -22,6 +23,7 @@ const router=createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App/>}>
       <Route index={true} path='/' element={<HomeScreen/>}/>
+      <Route path='/product/:id' element={<ProductScreen/>}/>
     </Route>
   )
 )
@@ -29,6 +31,7 @@ const router=createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    {/* <App */}
  {/* `<RouterProvider router={router}/>`. It takes the `router` object created using
 `createBrowserRouter()` and makes it available to the entire application as a context. This allows
 components within the application to access and utilize the routing configuration defined by the

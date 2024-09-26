@@ -10,6 +10,7 @@ const App = () => {
     <main className='py-3'>
       <Container>
          {/* <HomeScreen/> */}
+ {/* `<Outlet/>` is being used to render the child components defined in the routes configured for the parent component.  */}
          <Outlet/>
       </Container>
     </main> 
