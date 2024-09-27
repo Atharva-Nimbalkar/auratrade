@@ -40,11 +40,8 @@ and organized way to present product details to the user. */}
                         <ListGroup variant='flush'>
                             <ListGroup.Item>
                                 <Row>
-                                    <Col>Price:
-                                    </Col>
-                                    <Col>
-                                    <strong>${product.price}</strong>
-                                    </Col>
+                                    <Col>Price:</Col>
+                                    <Col><strong>${product.price}</strong></Col>
                                 </Row>
                             </ListGroup.Item>
 

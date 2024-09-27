@@ -1,0 +1,15 @@
+{
+  "name": "auratrade",
+  "version": "1.0.0",
+  "description": "eCommerce application using MERN Stack",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "author": "atharva nimbalkar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
