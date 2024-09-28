@@ -1,16 +1,29 @@
 /* The `useParams` hook is used to access the parameters of the current
 route in a React component. It allows you to access the dynamic segments of the URL and use them
 within your component to make decisions or display content based on those parameters. */
+import {useEffect,useState} from 'react';
 import {useParams} from 'react-router-dom';
+
 import { Link } from 'react-router-dom';
 import {Row,Col,Image,ListGroup,Card,Button} from 'react-bootstrap';
 import Rating from '../components/Rating';
-import products from '../products';
-
+// import products from '../products'; // no longer needed as we are fetching products from backend
+import axios from 'axios';
 const ProductScreen = () => {
+    const [product,setProduct]=useState([]);
+
+
     const {id:productId}=useParams();
-    const product=products.find((p)=>p._id===productId);
+    // const product=products.find((p)=>p._id===productId);
     // console.log(product);
+
+    useEffect(()=>{
+        const fetchProduct=async()=>{
+            const {data}=await axios.get(`/api/products/${productId}`);
+            setProduct(data);
+        }
+        fetchProduct();
+    },[productId]);//whenever productId changes, useEffect will run again
     return (
         <>
             <Link className='btn btn-light my-3' to='/'>Go back</Link>
