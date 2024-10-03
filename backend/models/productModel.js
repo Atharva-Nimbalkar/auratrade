@@ -47,7 +47,7 @@ reference to the user who added the product in the database schema. */
         type:String,
         required:true,
     },
-    categoty:{
+    category:{
         type:String,
         required:true,
     },
