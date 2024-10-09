@@ -6,6 +6,8 @@ import {
   Route,
   RouterProvider,
 } from 'react-router-dom';
+import {Provider} from 'react-redux';
+import store from './store';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/styles/bootstrap.custom.css';
 import './assets/styles/index.css';
@@ -31,12 +33,14 @@ const router=createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <App */}
+    {/* <App */} 
  {/* `<RouterProvider router={router}/>`. It takes the `router` object created using
 `createBrowserRouter()` and makes it available to the entire application as a context. This allows
 components within the application to access and utilize the routing configuration defined by the
 `router` object. */ }
-    <RouterProvider router={router}/>
+     <Provider store={store}>
+          <RouterProvider router={router}/>
+    </Provider>
   </React.StrictMode>
 );
 
