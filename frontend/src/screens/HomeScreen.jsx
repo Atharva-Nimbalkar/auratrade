@@ -4,6 +4,9 @@ import Product from '../components/Product'
 import { useGetProductsQuery } from '../slices/productsApiSlice'
 
 const HomeScreen = () => {
+/* The line `const {data:products, isLoading, error} = useGetProductsQuery();` is using object
+destructuring to extract specific properties from the return value of the `useGetProductsQuery`
+hook. */
   const {data:products,isLoading,error}=useGetProductsQuery();
 
 
