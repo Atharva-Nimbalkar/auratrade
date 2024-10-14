@@ -1,11 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
-
+import { updateCart } from '../utils/cartUtils';
 const initialState=localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : {cartItems:[]};
 
-//function to round off the decimal numbers to 2 decimal places
-const addDecimals=(num)=>{
-    return (Math.round(num*100)/100).toFixed(2);
-}
+
 
 const cartSlice=createSlice({// The `createSlice` function is used to create a slice of the Redux store. The `createSlice` function takes an object as an argument that contains the name of the slice and the initial state of the slice.
 
@@ -28,30 +25,11 @@ const cartSlice=createSlice({// The `createSlice` function is used to create a s
             }else{
                 state.cartItems=[...state.cartItems,item];//add the new item to the cart
             }
-
-            //calculate the items PRICE
-            state.itemsPrice=addDecimals(state.cartItems.reduce((acc,item)=>
-                acc+item.price*item.qty,0));
-
-            //calculate the shipping PRICE
-            state.shippingPrice=addDecimals(state.itemsPrice>100?0:10);
-
-            //calculate the TAX PRICE
-            state.taxPrice=addDecimals(Number((0.15*state.itemsPrice).toFixed(2)));
-            
-            //calculate the TOTAL PRICE
-            state.totalPrice=(
-                Number(state.itemsPrice)+
-                Number(state.shippingPrice)+
-                Number(state.taxPrice)
-            ).toFixed(2);
-
-            localStorage.setItem('cart',JSON.stringify(state));
-        }
            
+            return updateCart(state);
         }
     }
-);
+});
 
 export const {addToCart}=cartSlice.actions//export as actions 
 
