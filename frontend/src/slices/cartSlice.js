@@ -27,11 +27,17 @@ const cartSlice=createSlice({// The `createSlice` function is used to create a s
             }
            
             return updateCart(state);
+        },
+        removeFromCart:(state,action)=>{
+/*is removing an item from the `cartItems` array in the Redux store state based on a specific condition. */
+            state.cartItems=state.cartItems.filter((x)=>x._id!==action.payload);
+
+            return updateCart(state);
         }
     }
 });
 
-export const {addToCart}=cartSlice.actions//export as actions 
+export const {addToCart,removeFromCart}=cartSlice.actions//export as actions 
 
 /* By exporting the reducer as the default export, it can be easily imported and combined with other reducers to create the root reducer for the Redux store. */
 export default cartSlice.reducer;
