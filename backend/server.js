@@ -11,6 +11,12 @@ const port=process.env.PORT || 8000;
 connectDB();//connect to the database
 const app=express();
 
+
+//Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+
+
 app.get('/',(req,res)=>{
     res.send('API is running');
 })

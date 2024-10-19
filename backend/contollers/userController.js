@@ -6,7 +6,25 @@ import User from '../models/userModel.js';
 // @route POST/api/users/login
 //@access Public
 const authUser=asyncHandler(async(req,res)=>{
-res.send('auth user');
+    // console.log(req.body);/* logging the request body data to the console.  */
+    
+    const {email,password}=req.body;/*Destructuring the email and password from the request body. */
+    const user= await User.findOne({email});/*Is querying the database to find a user with the specified email address. */
+
+
+    if(user &&  (await user.matchPassword(password))){
+        res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin,
+        });
+    }
+    else{
+        res.status(401);
+        throw new Error('Invalid email or password');
+    }
+    // res.send('auth user');
 });
 
 
@@ -35,6 +53,7 @@ const getUserProfile=asyncHandler(async(req,res)=>{
 //@router PUT/api/users/profile //user update profile of their own  only so no need to pass id
 //@access Private
 const updateUserProfile=asyncHandler(async(req,res)=>{
+    console.log(req.body);//getting undefined so use parser
     res.send('update user profile');
 });
 

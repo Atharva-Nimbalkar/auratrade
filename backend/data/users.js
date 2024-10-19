@@ -12,7 +12,7 @@ difficult for attackers to retrieve the original password. */
     },
     {
         name:'John Doe',
-        email:'john@emai.com',
+        email:'john@email.com',
 /*This means that the password '123456' is being securely hashed using the bcrypt algorithm with a cost factor of 10, which determines the complexity of the hashing
 algorithm. This helps to securely store passwords in a hashed format in the database, making it more
 difficult for attackers to retrieve the original password. */
