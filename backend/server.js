@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import cors from 'cors';
+// import cors from 'cors';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 import connectDB from './config/db.js';
 // import { notFound,errorHandler } from './middleware/errorMiddleware.js'; //error handling done in productContoller.js file
@@ -16,8 +17,10 @@ const app=express();
 //Body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cors());
+// app.use(cors());
 
+//cookie parser middleware
+app.use(cookieParser());
 app.get('/',(req,res)=>{
     res.send('API is running');
 })
