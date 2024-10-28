@@ -28,7 +28,7 @@ router.route('/').post(registerUser).get(protect,admin,getUsers);
 router.post('/logout', logoutUser);
 
 /** * Route serving user login. * @param {function} authUser - Controller function to authenticate a user.*/
-router.post('/login', authUser);
+router.post('/auth', authUser);
 
 /*** Route serving user profile operations.* @param {function} getUserProfile - Controller function to get the profile of the authenticated user * @param {function} updateUserProfile - Controller function to update the profile of the authenticated user.
  * @param {function} protect - Middleware to protect the route and ensure the user is authenticated.*/

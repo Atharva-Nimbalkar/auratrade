@@ -1,19 +1,33 @@
+import { useNavigate } from 'react-router-dom';
 import {Badge,Navbar,Nav,Container, NavDropdown} from 'react-bootstrap';
 import {FaShoppingCart,FaUser} from 'react-icons/fa';
 import {LinkContainer} from 'react-router-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch} from 'react-redux';
+import { useLogoutMutation } from '../slices/usersApiSlice';
+import {logout} from '../slices/authSlice';
 import logo from '../assets/logo.png';
+
 const Header=()=>{
 /*  `useSelector` hook from `react-redux` to extract the `cartItems` property from the Redux store state. */
     const {cartItems }=useSelector((state)=>state.cart);
     const {userInfo}=useSelector((state)=>state.auth);
     console.log(cartItems);
 
-    const logoutHandler=()=>{
-        console.log('logout')   
-    }
+    const dispatch=useDispatch();
+    const navigate=useNavigate();
+
+    const [logoutApiCall]=useLogoutMutation();//returns an array containing the mutation function (logoutApiCall) and an object with additional properties such as isLoading, error, and data.
+    const logoutHandler=async()=>{
+        try{
+            await logoutApiCall().unwrap();//calls logoutApiCall, which is likely an API call to the server to log out the user. The await keyword pauses the execution of the function until the promise returned by logoutApiCall
+            dispatch(logout());//After the API call is successfully completed, the function dispatches a logout action using the dispatch function
+            navigate('/login');
+           }catch(err){
+            console.error("Logout Error:", err);
+           }
+    };
+    
     return (
-        <>
         <header>
             <Navbar bg='dark' variant='dark' expand='md' collapseOnSelect>
                 <Container>
@@ -33,6 +47,7 @@ const Header=()=>{
                                 </Badge>)}
                             </Nav.Link></LinkContainer>
                             {userInfo ? (
+                                <>
                                 <NavDropdown title={userInfo.name} id="username">
                                     <LinkContainer to='/profile'>
                                         <NavDropdown.Item>Profile</NavDropdown.Item>
@@ -40,15 +55,15 @@ const Header=()=>{
                                     <NavDropdown.Item onClick={logoutHandler}>
                                         Logout
                                     </NavDropdown.Item>
-                                </NavDropdown>)
-                                : (<LinkContainer to="/login"><Nav.Link><FaUser/>Sign In</Nav.Link></LinkContainer>
-)}
+                                </NavDropdown>
+                                </>)
+                                : (<><LinkContainer to="/login"><Nav.Link><FaUser/>Sign In</Nav.Link></LinkContainer>
+</>)}
                         </Nav>    
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
         </header>
-        </>
     );
 };
 
