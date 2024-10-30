@@ -1,6 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 import { updateCart } from '../utils/cartUtils';
-const initialState=localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : {cartItems:[]};
+const initialState=localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")) : {cartItems:[],
+    shippingAddress:{},paymentMethod:'PayPal'
+};
 
 
 
@@ -33,11 +35,16 @@ const cartSlice=createSlice({// The `createSlice` function is used to create a s
             state.cartItems=state.cartItems.filter((x)=>x._id!==action.payload);
 
             return updateCart(state);
-        }
+        },
+        // the state.shippingAddress property is updated with the value from action.payload. The action.payload contains the new shipping address data that needs to be saved in the state.
+        saveShippingAddress:(state,action)=>{
+            state.shippingAddress=action.payload;
+            return updateCart(state);
+        },
     }
 });
 
-export const {addToCart,removeFromCart}=cartSlice.actions//export as actions 
+export const {addToCart,removeFromCart,saveShippingAddress}=cartSlice.actions//export as actions 
 
 /* By exporting the reducer as the default export, it can be easily imported and combined with other reducers to create the root reducer for the Redux store. */
 export default cartSlice.reducer;
