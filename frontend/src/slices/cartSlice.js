@@ -41,10 +41,14 @@ const cartSlice=createSlice({// The `createSlice` function is used to create a s
             state.shippingAddress=action.payload;
             return updateCart(state);
         },
+        savePaymentMethod: (state,action)=>{
+            state.paymentMethod=action.payload;
+            return updateCart(state);
+        }
     }
 });
 
-export const {addToCart,removeFromCart,saveShippingAddress}=cartSlice.actions//export as actions 
+export const {addToCart,removeFromCart,saveShippingAddress,savePaymentMethod}=cartSlice.actions//export as actions 
 
 /* By exporting the reducer as the default export, it can be easily imported and combined with other reducers to create the root reducer for the Redux store. */
 export default cartSlice.reducer;
