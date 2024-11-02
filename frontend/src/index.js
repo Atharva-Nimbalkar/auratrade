@@ -21,6 +21,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ShippingScreen from './screens/ShippingScreen';
 import PaymentScreen from './screens/PaymentScreen';
+import PlaceOrderScreen from './screens/PlaceOrderScreen';
 
 /* The `const router=createBrowserRouter()` creating a router instance using the
 `createBrowserRouter`. This function is typically used to create a router object that can be used to define the routing configuration for a
@@ -39,6 +40,7 @@ const router=createBrowserRouter(
     <Route path='' element={<PrivateRoute/>}>
       <Route path='/shipping' element={<ShippingScreen/>}/>
       <Route path='/payment' element={<PaymentScreen/>}/>
+      <Route path='/placeorder' element={<PlaceOrderScreen/>}/>
     </Route>
     </Route>
   )
