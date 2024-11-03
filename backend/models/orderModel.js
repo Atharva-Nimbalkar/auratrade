@@ -23,7 +23,7 @@ const orderSchema=mongoose.Schema({
         postalCode:{type:String,required:true},
         country:{type:String,requires:true},
     },
-    paymenyMethod:{
+    paymentMethod:{
         type:String,
         required:true,
     },

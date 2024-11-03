@@ -4,13 +4,11 @@ import { ORDERS_URL } from '../constants';
 export const ordersApiSlice=apiSlice.injectEndpoints({
     endpoints : (builder)=>({
         createOrder: builder.mutation({
-            createOrder: builder.mutation({
                query: (order)=>({
-                url : ORDERS_URL,
+                url : `${ORDERS_URL}`,
                 method: 'POST',
                 body: {...order}
                })
-            })
         })
     })
 });
