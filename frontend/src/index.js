@@ -6,6 +6,7 @@ import {
   Route,
   RouterProvider,
 } from 'react-router-dom';
+import {PayPalScriptProvider} from '@paypal/react-paypal-js';
 import {Provider} from 'react-redux';
 import store from './store';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -57,10 +58,13 @@ root.render(
 components within the application to access and utilize the routing configuration defined by the
 `router` object. */ }
      <Provider store={store}>
-          <RouterProvider router={router}/>
+     {/* deferLoading={true} is used to defer the loading of the PayPal script until it is needed. This can help improve the performance of the application by reducing the initial load time. */}
+      <PayPalScriptProvider deferLoading={true}>
+        <RouterProvider router={router}/>
+      </PayPalScriptProvider>
     </Provider>
   </React.StrictMode>
-);
+); 
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

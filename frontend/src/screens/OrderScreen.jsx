@@ -1,15 +1,55 @@
+import {useEffect} from 'react';
 import {Link,useParams} from 'react-router-dom';
 import {Row,Col,ListGroup,Image,Form,Button,Card} from 'react-bootstrap';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { useGetOrderDetailsQuery } from '../slices/ordersApiSlice';
-
+import { 
+    useGetOrderDetailsQuery,
+    usePayOrderMutation,
+    useGetPayPalClientIdQuery 
+} from '../slices/ordersApiSlice';
+import {toast} from 'react-toastify';
+import { PayPalButtons,usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import { useSelector } from 'react-redux';
 
 const OrderScreen = () => {
-    const {id: orderId}=useParams();
+    const {id: orderId}=useParams();//get the orderId parameter from the URL path using the useParams hook
   
-    const {data: order,refetch,isLoading,error}=useGetOrderDetailsQuery(orderId);
-    console.log(order);
+    const {data: order,refetch,isLoading,error}=useGetOrderDetailsQuery(orderId);//fetch order details from the server using the orderId parameter from the URL path and store the result in the order variable using the useGetOrderDetailsQuery hook
+
+    const [payOrder,{isLoading : loadingPay}]=usePayOrderMutation();//create a payOrder mutation using the usePayOrderMutation hook to update the payment status of an order on the server 
+
+
+    const [{isPending},paypalDispatch]=usePayPalScriptReducer();//create a PayPal script reducer using the usePayPalScriptReducer hook to manage the loading state of the PayPal script 
+
+    const {data : paypal,
+        isLoading : loadingPayPal,
+        error: errorPayPal,
+    }=useGetPayPalClientIdQuery(); //fetch the PayPal client ID from the server and store the result in the paypal variable using the useGetPayPalClientIdQuery hook
+
+    const {userInfo}=useSelector((state)=>state.auth);//get the userInfo object from the state using the useSelector hook
+
+    useEffect(()=>{
+        if(!errorPayPal && !loadingPayPal && paypal.clientId){
+            const loadPayPalScript=async()=>{
+                paypalDispatch({
+                    type: 'resetOptions',
+                    value:{
+                        'client-id' : paypal.clientId,
+                        currency: 'USD',
+                    }
+                });
+                paypalDispatch({
+                    type: 'setLoadingStatus',value : 'pending'});
+            }
+            if(order && !order.isPaid){
+                if(!window.paypal){
+                    loadPayPalScript();
+                }
+            }
+        }
+    },[order,paypal,paypalDispatch,loadingPayPal,errorPayPal]);
+    // console.log(order);
     
     return isLoading ? (
         <Loader/>
