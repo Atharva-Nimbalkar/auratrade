@@ -19,7 +19,6 @@ const OrderScreen = () => {
 
     const [payOrder,{isLoading : loadingPay}]=usePayOrderMutation();//create a payOrder mutation using the usePayOrderMutation hook to update the payment status of an order on the server 
 
-
     const [{isPending},paypalDispatch]=usePayPalScriptReducer();//create a PayPal script reducer using the usePayPalScriptReducer hook to manage the loading state of the PayPal script 
 
     const {data : paypal,
@@ -30,19 +29,19 @@ const OrderScreen = () => {
     const {userInfo}=useSelector((state)=>state.auth);//get the userInfo object from the state using the useSelector hook
 
     useEffect(()=>{
-        if(!errorPayPal && !loadingPayPal && paypal.clientId){
+        if(!errorPayPal && !loadingPayPal && paypal.clientId){//check if the PayPal client ID has been fetched successfully and is available in the paypal variable 
             const loadPayPalScript=async()=>{
                 paypalDispatch({
-                    type: 'resetOptions',
+                    type: 'resetOptions',//reset the options for the PayPal script 
                     value:{
-                        'client-id' : paypal.clientId,
-                        currency: 'USD',
+                        'client-id' : paypal.clientId,//set the client ID for the PayPal script 
+                        currency: 'USD',//set the currency for the PayPal script
                     }
                 });
-                paypalDispatch({
-                    type: 'setLoadingStatus',value : 'pending'});
+                paypalDispatch({//set the loading status of the PayPal script to pending 
+                    type: 'setLoadingStatus',value : 'pending'});//
             }
-            if(order && !order.isPaid){
+            if(order && !order.isPaid){//check if the order details have been fetched successfully and the order has not been paid 
                 if(!window.paypal){
                     loadPayPalScript();
                 }
@@ -51,6 +50,39 @@ const OrderScreen = () => {
     },[order,paypal,paypalDispatch,loadingPayPal,errorPayPal]);
     // console.log(order);
     
+    function onApprove(data,actions){//create an onApprove function that captures the payment details and updates the payment status of the order on the server
+        return actions.order.capture().then(async function(details){//capture the payment using the PayPal API 
+            try{
+                await payOrder({orderId:order._id,details : {payer: {}}});//update the payment status of the order on the server using the payOrder mutation 
+                refetch();
+                toast.success('Order paid successfully');
+            }catch(error){
+                toast.error(error?.data?.message || error.message);
+            }
+        })
+    }
+    async function onApproveTest(){//create an onApproveTest function that simulates a successful payment for testing purposes
+        await payOrder({orderId,details: {payer:{}}});
+        refetch();
+        toast.success('Payment successful');
+    }
+    function onError(err){//create an onError function that displays an error message if the payment fails
+        toast.error(err.message);
+    }
+    function createOrder(data,actions){//
+        return actions.order.create({
+            purchase_units:[//create a purchase unit with the order total price
+                {
+                    amount:{
+                        value:order.totalPrice,
+                        currency_code:'USD'//optional
+                    }
+                }
+            ]
+        }).then((orderId)=>{
+            return orderId;
+        })
+    }
     return isLoading ? (
         <Loader/>
     )  : error ? (
@@ -141,6 +173,25 @@ const OrderScreen = () => {
                                 <Col>${order.totalPrice}</Col>
                             </Row>
                         </ListGroup.Item>
+
+                                {!order.isPaid && (
+                                    <ListGroup.Item>
+                                        {loadingPay && <Loader/>}
+                                        {isPending ? <Loader/> : (
+                                            <div>
+                                                <Button onClick={onApproveTest} style={{marginBottom : '10px'}}>Test Pay Order</Button>
+                                                <div>
+                                                    <PayPalButtons 
+                                                        createOrder={createOrder}
+                                                        onApprove={onApprove}
+                                                        onError={onError}
+                                                    ></PayPalButtons>
+                                                </div>
+                                            </div>
+                                         )}
+                                    </ListGroup.Item>
+                                )}
+
                         {/* PAY ORDER PLACEHOLDER */}
                         {/* MARK AS DELIVERD PLACEHOLDER */}
                     </ListGroup>

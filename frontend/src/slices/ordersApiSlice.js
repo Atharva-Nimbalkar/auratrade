@@ -10,14 +10,14 @@ export const ordersApiSlice=apiSlice.injectEndpoints({
                 body: {...order}
                })
         }),
-        getOrderDetails: builder.query({
+        getOrderDetails: builder.query({ //getOrderDetails is a query that sends a GET request to the /api/orders/:id endpoint to fetch an order's details 
             query: (orderId)=>({
                 url: `${ORDERS_URL}/${orderId}`
             }),
             keepUnusedDataFor: 5,
         }),
         payOrder : builder.mutation({//payOrder is a mutation that sends a PUT request to the /api/orders/:id/pay endpoint to update an order's payment status
-            query: (orderId,details)=>({
+            query: ({orderId,details})=>({
                 url : `${ORDERS_URL}/${orderId}/pay`,
                 method: 'PUT',
                 body: {...details},

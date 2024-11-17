@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
 import {Link,useNavigate} from 'react-router-dom'
 import { useSelector,useDispatch } from 'react-redux'
-import {Button,Row,Col,ListGroup,Image,Card} from 'react-bootstrap'
+import {Button,Row,Col,ListGroup,Image,Card} from 'react-bootstrap';
 import {toast} from 'react-toastify';
 import CheckoutSteps from '../components/CheckoutSteps'
 import Message from '../components/Message';
@@ -36,7 +36,7 @@ const PlaceOrderScreen = () => {
           totalPrice: cart.totalPrice,
         }).unwrap();
         dispatch(clearCartItems());
-        navigate(`/order/${res._id}`);
+        navigate(`/orders/${res._id}`);
       }catch(error){
           toast.error(error?.data?.message || 'An error occurred');
       }
@@ -80,7 +80,7 @@ const PlaceOrderScreen = () => {
                            <Link to={`/product/${item.product}`}>{item.name}</Link>
                           </Col>
                           <Col md={4}>
-                            {item.qty} x ${item.price}=${(item.qty*item.price)}
+                            {item.qty} x ${item.price}=${((item.qty*item.price*100))/100}
                           </Col>
                         </Row>
                         </ListGroup.Item>
@@ -123,7 +123,7 @@ const PlaceOrderScreen = () => {
 
                       <ListGroup.Item>
                         <Row>
-                          <Col>Toal:</Col>
+                          <Col>Total:</Col>
                           <Col>
                             ${cart.totalPrice}
                           </Col>
@@ -131,7 +131,7 @@ const PlaceOrderScreen = () => {
                       </ListGroup.Item>
 
                       <ListGroup.Item>
-                        {error && <Message variant='danger'>{error.data?.message || JSON.stringify(error) || 'An error occurred'  }</Message>}
+                        {error && <Message variant='danger'>{error.data.message || JSON.stringify(error) || 'An error occurred'  }</Message>}
                       </ListGroup.Item>
                       
                       <ListGroup.Item>
