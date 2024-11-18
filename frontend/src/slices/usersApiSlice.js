@@ -15,17 +15,24 @@ export const usersApiSlice=apiSlice.injectEndpoints({//The `injectEndpoints` fun
                 url: `${USERS_URL}`,
                 method: 'POST',
                 body: data
-            })
+            }),
         }),
         // builder.mutation is used for creating, updating, or deleting data on the server. In this case, it is used to handle user logout by sending a POST request to the server
         logout: builder.mutation({
             query: ()=>({
                 url: `${USERS_URL}/logout`,
                 method: 'POST',
+            }),
+        }),
+        profile : builder.mutation({//builder.mutation is used for creating, updating, or deleting data on the server. In this case, it is used to handle user profile updates by sending a PUT request to the server 
+            query: (data)=>({
+                url: `${USERS_URL}/profile`,
+                method: 'PUT',
+                body: data,
             })
         })
     }),
 });
 
 
-export const {useLoginMutation,useLogoutMutation,useRegisterMutation}=usersApiSlice;
+export const {useLoginMutation,useLogoutMutation,useRegisterMutation,useProfileMutation}=usersApiSlice;

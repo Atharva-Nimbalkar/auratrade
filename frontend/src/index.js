@@ -24,7 +24,7 @@ import ShippingScreen from './screens/ShippingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
-
+import ProfileScreen from './screens/ProfileScreen';
 /* The `const router=createBrowserRouter()` creating a router instance using the
 `createBrowserRouter`. This function is typically used to create a router object that can be used to define the routing configuration for a
 React application. */
@@ -44,6 +44,7 @@ const router=createBrowserRouter(
       <Route path='/payment' element={<PaymentScreen/>}/>
       <Route path='/placeorder' element={<PlaceOrderScreen/>}/>
       <Route path='/orders/:id' element={<OrderScreen/>}/>
+      <Route path='/profile' element={<ProfileScreen/>}/>
     </Route>
     </Route>
   )
