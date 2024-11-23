@@ -23,24 +23,29 @@ export const ordersApiSlice=apiSlice.injectEndpoints({
                 body: {...details},
             }),
         }),
-        getPayPalClientId: builder.query({
+        getPayPalClientId: builder.query({// to the /api/config/paypal endpoint to fetch the PayPal client ID
             query: ()=>({
                 url: LOGIN_URL,
             }),
             keepUnusedDataFor: 5,
         }),
-        getMyOrders: builder.query({
+        getMyOrders: builder.query({// to the /api/orders/mine endpoint to fetch the orders of the currently logged-in user
             query:()=>({
                 url: `${ORDERS_URL}/mine`,
             }),
             keepUnusedDataFor: 5,
         }),
-        getOrders: builder.query({
+        getOrders: builder.query({// to the /api/orders endpoint to fetch all orders
             query: ()=>({
                 url : ORDERS_URL,
-                
             }),
             keepUnusedDataFor: 5,
+        }),
+        deliverOrder: builder.mutation({//api/orders/:id/deliver endpoint to update an order's delivery status
+            query: (orderId)=>({
+                url: `${ORDERS_URL}/${orderId}/deliver`,
+                method : 'PUT',
+            })
         })
     }),
 });
@@ -51,5 +56,6 @@ export const {
     usePayOrderMutation,
     useGetPayPalClientIdQuery,
     useGetMyOrdersQuery,
-    useGetOrdersQuery
+    useGetOrdersQuery,
+    useDeliverOrderMutation,
 }=ordersApiSlice;

@@ -6,7 +6,8 @@ import Loader from '../components/Loader';
 import { 
     useGetOrderDetailsQuery,
     usePayOrderMutation,
-    useGetPayPalClientIdQuery 
+    useGetPayPalClientIdQuery ,
+    useDeliverOrderMutation
 } from '../slices/ordersApiSlice';
 import {toast} from 'react-toastify';
 import { PayPalButtons,usePayPalScriptReducer } from '@paypal/react-paypal-js';
@@ -18,6 +19,8 @@ const OrderScreen = () => {
     const {data: order,refetch,isLoading,error}=useGetOrderDetailsQuery(orderId);//fetch order details from the server using the orderId parameter from the URL path and store the result in the order variable using the useGetOrderDetailsQuery hook
 
     const [payOrder,{isLoading : loadingPay}]=usePayOrderMutation();//create a payOrder mutation using the usePayOrderMutation hook to update the payment status of an order on the server 
+
+    const [deliverOrder,{isLoading : loadingDeliver}]=useDeliverOrderMutation();//create a deliverOrder mutation using the useDeliverOrderMutation hook to update the delivery status of an order on the server
 
     const [{isPending},paypalDispatch]=usePayPalScriptReducer();//create a PayPal script reducer using the usePayPalScriptReducer hook to manage the loading state of the PayPal script 
 
@@ -83,6 +86,17 @@ const OrderScreen = () => {
             return orderId;
         })
     }
+
+    const deliverOrderHandler=async()=>{//create a deliverOrderHandler function that updates the delivery status of the order on the server
+        try {
+        await deliverOrder(orderId);
+        refetch();
+        toast.success('Order delivered');
+      } catch (err){
+        toast.error(err?.data?.message || err.message);
+      }
+    };
+    console.log(order);
     return isLoading ? (
         <Loader/>
     )  : error ? (
@@ -107,7 +121,7 @@ const OrderScreen = () => {
                         {order.shippingAddress.postalCode}, {order.shippingAddress.country}
                     </p>
                     {order.isDelivered ? (
-                        <Message variant='success'>Delivered on {order.isDelivered}</Message>
+                        <Message variant='success'>Delivered on {order.deliveredAt}</Message>
                 ):
                 (
                     <Message variant='danger'>Not Delivered</Message>
@@ -192,8 +206,16 @@ const OrderScreen = () => {
                                     </ListGroup.Item>
                                 )}
 
-                        {/* PAY ORDER PLACEHOLDER */}
-                        {/* MARK AS DELIVERD PLACEHOLDER */}
+                                {loadingDeliver && <Loader/>}
+                                {/* display a loading spinner while the order delivery status is being updated on the server */}
+
+                                {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                    <ListGroup.Item>
+                                        <Button type='button' className='btn btn-block' onClick={()=>deliverOrderHandler(order._id)}>
+                                            Mark As Delivered
+                                        </Button>
+                                    </ListGroup.Item>
+                                )}
                     </ListGroup>
                 </Card>
             </Col>
