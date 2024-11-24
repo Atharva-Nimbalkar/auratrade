@@ -27,6 +27,7 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import OrderListScreen from './screens/admin/OrderListScreen';
+import ProductListScreen from './screens/admin/ProductListScreen';
 /* The `const router=createBrowserRouter()` creating a router instance using the
 `createBrowserRouter`. This function is typically used to create a router object that can be used to define the routing configuration for a
 React application. */
@@ -51,6 +52,7 @@ const router=createBrowserRouter(
 
     <Route path='' element={<AdminRoute/>}>
       <Route path='/admin/orderlist' element={<OrderListScreen/>}/>
+      <Route path='/admin/productlist' element={<ProductListScreen/>}/>
     </Route>
     </Route>
   )
