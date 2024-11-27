@@ -15,24 +15,22 @@ const getProducts=asyncHandler(async(req,res)=>{
 //@route GET/api/products/:id
 //@access Public
 const getProductById=asyncHandler(async(req,res)=>{
-    asyncHandler(async(req,res)=>{
-
-        const { id } = req.params;
+        // const { id } = req.params;
     
             // Validate if the id is a valid ObjectId
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-                return res.status(400).json({ message: 'Invalid product ID' });
-        }
+        // if (!mongoose.Types.ObjectId.isValid(id)) {
+        //         return res.status(400).json({ message: 'Invalid product ID' });
+        // }
         // const product=products.find((p)=>p._id===req.params.id);
         const product=await Product.findById(req.params.id);//get the product by id from the database
         
         if(product){
             return res.json(product);
+        }else{//if product is not found in the database 
+            res.status(404);
+            throw new Error('Product not found');
         }
-    
-        res.status(404).json({message:'Product not found'});
     })
-})
 
 //@desc Create a product
 // @route POST/api/products
@@ -52,4 +50,29 @@ const createProduct=asyncHandler(async(req,res)=>{
     const createdProduct=await product.save();//save the product to the database 
     res.status(201).json(createdProduct);//return the created product 
 })
-export  {getProducts,getProductById,createProduct};
+
+//@desc update all products
+// @route PUT/api/products
+//@access Private/Admin
+const updateProduct=asyncHandler(async(req,res)=>{
+    const {name,price,description,image,brand,category,countInStock}=req.body;
+
+    const product =await Product.findById(req.params.id);
+
+    if(product){
+        product.name=name||product.name;
+        product.price=price||product.price;
+        product.description=description||product.description;
+        product.image=image||product.image;
+        product.brand=brand||product.brand;
+        product.category=category||product.category;
+        product.countInStock=countInStock||product.countInStock;
+
+        const updatedProduct=await product.save();  
+        res.json(updatedProduct);
+    }else{
+        res.status(404);
+        throw new Error('Product not found');
+    }
+});
+export  {getProducts,getProductById,createProduct,updateProduct};

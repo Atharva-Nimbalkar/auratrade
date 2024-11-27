@@ -7,6 +7,7 @@ const router =express.Router();
 import {getProducts,
     getProductById,
     createProduct,
+    updateProduct,
 } from '../contollers/productContoller.js';
 import {protect,admin} from '../middleware/authMiddleware.js';
 
@@ -39,7 +40,7 @@ asynchronous operations and pass them to the Express error handling middleware.*
 // }));
 
 router.route('/').get(getProducts).post(protect,admin,createProduct);
-router.route(':/id').get(getProductById);
+router.route('/:id').get(getProductById).put(protect,admin,updateProduct);
 /*  Express
     automatically parses the value of that parameter and makes
     it available in the `req.params` object. */
