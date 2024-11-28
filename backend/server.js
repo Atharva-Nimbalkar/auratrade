@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 // import cors from 'cors';
@@ -8,7 +9,7 @@ import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
-
+import uploadRoutes from './routes/uploadRoutes.js';
 const port=process.env.PORT || 8000;
 
 connectDB();//connect to the database
@@ -42,9 +43,12 @@ app.get('/api/config/paypal',(req,res)=>{
 app.use('/api/products',productRoutes);
 app.use('/api/users',userRoutes);
 app.use('/api/orders',orderRoutes);
-
+app.use('/api/upload',uploadRoutes);
 // app.use(notFound);
 // app.use(errorHandler);
+
+const __dirname=path.resolve();//current directory name in which the file is present 
+app.use('/uploads',express.static(path.join(__dirname,'/uploads')));//make the uploads folder static so that it can be accessed by the frontend 
 app.listen(port,()=>console.log(`server running on port ${port}`))
 
 
