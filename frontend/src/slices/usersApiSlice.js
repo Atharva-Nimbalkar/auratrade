@@ -37,6 +37,13 @@ export const usersApiSlice=apiSlice.injectEndpoints({//The `injectEndpoints` fun
             }),
             providesTags:['Users'],//In this case, the `Users` tag is specified, which means that the data fetched by the query will be tagged with `Users`.
             keepUnusedDataFor: 5,
+        }),
+        deleteUser: builder.mutation({
+            query: (userId)=>({
+                url: `${USERS_URL}/${userId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags:['Users'],
         })
     }),
 });
@@ -48,4 +55,5 @@ export const {
     useRegisterMutation,
     useProfileMutation,
     useGetUsersQuery,
+    useDeleteUserMutation,
 }=usersApiSlice;
