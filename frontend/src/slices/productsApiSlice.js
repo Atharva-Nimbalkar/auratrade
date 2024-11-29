@@ -1,4 +1,3 @@
-import { data } from 'autoprefixer';
 import {PRODUCTS_URL,UPLOAD_URL} from '../constants';
 import { apiSlice } from './apiSlice';
 
@@ -35,13 +34,19 @@ export const productsApiSlice=apiSlice.injectEndpoints({//The `injectEndpoints` 
             }),
             invalidatesTags:['Products'],
         }),
-        uploadProductImage:builder.mutation({
+        uploadProductImage:builder.mutation({// This method is used to define a mutation endpoint that sends data to the specified URL. the `uploadProductImage` mutation sends an image file to the server to be uploaded. 
             query:(data)=>({
                 url: `${UPLOAD_URL}`,
                 method: 'POST',
                 body: data,
             })
-        })
+        }),
+        deleteProduct: builder.mutation({
+            query: (productId)=>({
+                url: `${PRODUCTS_URL}/${productId}`,
+                method: 'DELETE',
+            }),
+         }),
     }),
 });
 
@@ -50,4 +55,5 @@ and `injectEndpoints` functions to provide access to the `getProducts` endpoint 
 export const {useGetProductsQuery,useGetProductDetailsQuery,useCreateProductMutation,
     useUpdateProductMutation,
     useUploadProductImageMutation,
+    useDeleteProductMutation,
 }=productsApiSlice;
