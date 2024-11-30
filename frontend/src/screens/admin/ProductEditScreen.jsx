@@ -10,7 +10,6 @@ import {useUpdateProductMutation,
   useGetProductDetailsQuery,
   useUploadProductImageMutation,
 } from '../../slices/productsApiSlice';  
-import { set } from 'mongoose';
 
 const ProductEditScreen = () => {
 
@@ -126,6 +125,7 @@ const ProductEditScreen = () => {
               value={brand} 
               onChange={(e)=>setBrand(e.target.value)}>
               </Form.Control> 
+              {loadingUpload && <Loader/>}
             </Form.Group>
 
             <Form.Group controlId='countInStock' className='my-2'>
