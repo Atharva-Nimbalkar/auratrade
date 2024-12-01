@@ -9,6 +9,7 @@ import {getProducts,
     createProduct,
     updateProduct,
     deleteProduct,
+    createdProductReview
 } from '../contollers/productContoller.js';
 import {protect,admin} from '../middleware/authMiddleware.js';
 
@@ -46,7 +47,8 @@ router
     .get(getProductById)
     .put(protect,admin,updateProduct)
     .delete(protect,admin,deleteProduct);
-/*  Express
+router.route('/:id/reviews').post(protect,createdProductReview);
+    /*  Express
     automatically parses the value of that parameter and makes
     it available in the `req.params` object. */
 export default router;
