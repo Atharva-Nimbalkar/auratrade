@@ -17,7 +17,7 @@ querying the product data. */
         type:Number,
         required:true,
     },
-    comments:{
+    comment:{
         type:String,
         required:true,  
     }
