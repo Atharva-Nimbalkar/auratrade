@@ -4,8 +4,11 @@ import { apiSlice } from './apiSlice';
 export const productsApiSlice=apiSlice.injectEndpoints({//The `injectEndpoints` function is used to add new endpoints to an existing API slice. It takes an object as an argument that contains the new endpoints to be added to the API slice.
     endpoints:(builder)=>({//define the API endpoints that your application will interact with
         getProducts:builder.query({//The `getProducts` endpoint is defined using the `builder.query` method. This method is used to define a query endpoint that fetches data from the specified URL.
-            query:()=>({
+            query:({pageNumber})=>({
                 url: PRODUCTS_URL,//fetch data wihtout axios
+                params: { 
+                    pageNumber,
+                },//The `params` option is used to specify the query parameters that should be included in the request URL. In this case, the `pageNumber` parameter is specified, which is used to fetch the products for a specific page number.
             }),
             providesTags:['Products'],//The `providesTags` option is used to specify the tags that should be added to the query result. In this case, the `Products` tag is specified, which means that the data fetched by the query will be tagged with `Product`.
 /* The `keepUnseenDataFor: 5` option in the `getProducts` query configuration is setting a cache policy for the query result. It specifies that the data fetched by the query will be kept in the cache for
