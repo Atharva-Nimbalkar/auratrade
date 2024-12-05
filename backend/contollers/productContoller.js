@@ -6,7 +6,7 @@ import Product from '../models/productModel.js';
 // @route GET/api/products
 //@access Public
 const getProducts=asyncHandler(async(req,res)=>{
-    const pageSize=2;//number of products per page 
+    const pageSize=4;//number of products per page 
     const page=Number(req.query.pageNumber)||1;//current page number
     const count=await Product.countDocuments();//total number of products in the database
 
