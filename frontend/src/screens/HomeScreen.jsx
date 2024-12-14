@@ -8,11 +8,14 @@ import Paginate from '../components/Paginate'
 import { useGetProductsQuery } from '../slices/productsApiSlice'
 
 const HomeScreen = () => {
-  const {pageNumber}=useParams();//get the page number from the URL using the `useParams` hook 
+  const {pageNumber,keyword}=useParams();//get the page number from the URL using the `useParams` hook 
 /* The line `const {data:products, isLoading, error} = useGetProductsQuery();` is using object
 destructuring to extract specific properties from the return value of the `useGetProductsQuery`
 hook. */
-  const {data,isLoading,error}=useGetProductsQuery({pageNumber});
+  const {data,isLoading,error}=useGetProductsQuery({
+    keyword,
+    pageNumber
+  });
 
 
   return (
@@ -36,7 +39,7 @@ medium screens, 4 columns on large screens, and 3 columns on extra-large screens
                     </Col>
             ))}
         </Row>
-        <Paginate pages={data.pages} page={data.page} />
+        <Paginate pages={data.pages} page={data.page} keyword={keyword ? keyword : '' }/>
         
           </>)}
     </>
