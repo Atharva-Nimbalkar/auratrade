@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import {useParams} from 'react-router-dom';
 import {Row,Col} from 'react-bootstrap'
 import Product from '../components/Product'
@@ -20,6 +21,8 @@ hook. */
 
   return (
     <>
+        {keyword && <Link to='/' classname='btn btn-light mb-4'>Go Back</Link>}
+        {/* //If the keyword exists, display a link to go back to the home page */}
         {isLoading ?  
         (<Loader/>) : error ? (
           <Message variant='danger'>
