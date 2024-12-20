@@ -59,6 +59,12 @@ export const productsApiSlice=apiSlice.injectEndpoints({//The `injectEndpoints` 
             }),
             invalidatesTags:['Product'],
     }),
+    getTopProducts: builder.query({//The `getTopProducts` endpoint is defined using the `builder.query` method. This method is used to define a query endpoint that fetches the top rated products from the specified URL.
+        query:()=>({
+            url: `${PRODUCTS_URL}/top`,
+        }),
+        keepUnusedDataFor: 5,
+    })
     })
 });
 
@@ -69,4 +75,5 @@ export const {useGetProductsQuery,useGetProductDetailsQuery,useCreateProductMuta
     useUploadProductImageMutation,
     useDeleteProductMutation,
     useCreateReviewMutation,
+    useGetTopProductsQuery
 }=productsApiSlice;

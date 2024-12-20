@@ -9,7 +9,8 @@ import {getProducts,
     createProduct,
     updateProduct,
     deleteProduct,
-    createdProductReview
+    createdProductReview,
+    getTopProducts
 } from '../contollers/productContoller.js';
 import {protect,admin} from '../middleware/authMiddleware.js';
 
@@ -42,6 +43,7 @@ asynchronous operations and pass them to the Express error handling middleware.*
 // }));
 
 router.route('/').get(getProducts).post(protect,admin,createProduct);
+router.get('/top',getTopProducts);//get top rated products 
 router
     .route('/:id') 
     .get(getProductById)

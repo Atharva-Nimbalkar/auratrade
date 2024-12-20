@@ -6,6 +6,7 @@ import Product from '../components/Product'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Paginate from '../components/Paginate'
+import ProductCarousal from '../components/ProductCarousal';
 import { useGetProductsQuery } from '../slices/productsApiSlice'
 
 const HomeScreen = () => {
@@ -21,7 +22,7 @@ hook. */
 
   return (
     <>
-        {keyword && <Link to='/' classname='btn btn-light mb-4'>Go Back</Link>}
+        {!keyword ? <ProductCarousal/> :  <Link to='/' classname='btn btn-light mb-4'>Go Back</Link>}
         {/* //If the keyword exists, display a link to go back to the home page */}
         {isLoading ?  
         (<Loader/>) : error ? (
@@ -43,7 +44,6 @@ medium screens, 4 columns on large screens, and 3 columns on extra-large screens
             ))}
         </Row>
         <Paginate pages={data.pages} page={data.page} keyword={keyword ? keyword : '' }/>
-        
           </>)}
     </>
   );
