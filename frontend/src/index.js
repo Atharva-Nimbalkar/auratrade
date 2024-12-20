@@ -7,6 +7,7 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import {PayPalScriptProvider} from '@paypal/react-paypal-js';
+import {HelmetProvider} from 'react-helmet-async';
 import {Provider} from 'react-redux';
 import store from './store';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -76,12 +77,14 @@ root.render(
 `createBrowserRouter()` and makes it available to the entire application as a context. This allows
 components within the application to access and utilize the routing configuration defined by the
 `router` object. */ }
+    <HelmetProvider>
      <Provider store={store}>
      {/* deferLoading={true} is used to defer the loading of the PayPal script until it is needed. This can help improve the performance of the application by reducing the initial load time. */}
       <PayPalScriptProvider deferLoading={true}>
         <RouterProvider router={router}/>
       </PayPalScriptProvider>
     </Provider>
+    </HelmetProvider>
   </React.StrictMode>
 ); 
 

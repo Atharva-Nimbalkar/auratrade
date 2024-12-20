@@ -16,6 +16,7 @@ import {toast} from 'react-toastify';
 import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import Meta from '../components/Meta';
 // import products from '../products'; // no longer needed as we are fetching products from backend
 import { useGetProductDetailsQuery,useCreateReviewMutation } from '../slices/productsApiSlice';
 import { addToCart } from '../slices/cartSlice';
@@ -68,6 +69,7 @@ const ProductScreen = () => {
             </Message>
             ) :  (// if product is not null
                 <>
+                <Meta title={product.name}/>
                 <Row>
                 <Col md={5}>
                 <Image src={product.image} alt={product.name} fluid/>
@@ -153,7 +155,7 @@ and organized way to present product details to the user. */}
                             </ListGroup.Item>
                         ))}
                         <ListGroup.Item>
-                            <h2>Write a customer reviwew</h2>
+                            <h2>Write a customer review</h2>
                             {loadingProductReview && <Loader/>}
                             {userInfo ? (
                                 <Form onSubmit={submitHandler}>
