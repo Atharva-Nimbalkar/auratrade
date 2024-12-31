@@ -60,15 +60,15 @@ const OrderScreen = () => {
                 refetch();
                 toast.success('Order paid successfully');
             }catch(error){
-                toast.error(error?.data?.message || error.message);
+                toast.error(error?.data?.message || error.error);
             }
         })
     }
-    async function onApproveTest(){//create an onApproveTest function that simulates a successful payment for testing purposes
-        await payOrder({orderId,details: {payer:{}}});
-        refetch();
-        toast.success('Payment successful');
-    }
+    // async function onApproveTest(){//create an onApproveTest function that simulates a successful payment for testing purposes
+    //     await payOrder({orderId,details: {payer:{}}});
+    //     refetch();
+    //     toast.success('Payment successful');
+    // }
     function onError(err){//create an onError function that displays an error message if the payment fails
         toast.error(err.message);
     }
@@ -100,7 +100,7 @@ const OrderScreen = () => {
     return isLoading ? (
         <Loader/>
     )  : error ? (
-        <Message variant='danger/'/>
+        <Message variant='danger/'>{error.data.message}</Message>    
     ) : (
         <>
         <h1>Order {order._id}</h1>
@@ -193,7 +193,7 @@ const OrderScreen = () => {
                                         {loadingPay && <Loader/>}
                                         {isPending ? <Loader/> : (
                                             <div>
-                                                <Button onClick={onApproveTest} style={{marginBottom : '10px'}}>Test Pay Order</Button>
+                                                {/* <Button onClick={onApproveTest} style={{marginBottom : '10px'}}>Test Pay Order</Button> */}
                                                 <div>
                                                     <PayPalButtons 
                                                         createOrder={createOrder}

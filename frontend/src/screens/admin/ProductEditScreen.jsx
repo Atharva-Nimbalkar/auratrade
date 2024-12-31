@@ -48,19 +48,23 @@ const ProductEditScreen = () => {
     
     const  submitHandler=async(e)=>{
         e.preventDefault();
-        const updatedProduct={productId,name,price,image,brand,category,countInStock,description};
-
-        const result=await updateProduct(updatedProduct);
-        if(result.error){
-            toast.error('Product update failed');
-        }else{
+        try{
+            await updateProduct({
+              productId,
+              name,
+              price,
+              image,
+              brand,
+              category,
+              countInStock,
+              description}).unwrap();
             toast.success('Product updated successfully');
-            refetch()
+            refetch();
             navigate('/admin/productlist');
+        }catch(err){
+            toast.error(err?.data?.message || err.error);
         }
-        
-
-    }
+}
 
     const uploadFileHandler=async(e)=>{
       console.log(e.target.files[0]);
@@ -86,8 +90,9 @@ const ProductEditScreen = () => {
       </h1>
       {loadingUpdate && <Loader/>}
 
-      {isLoading ? <Loader/> : error ? <Message variant='danger'>
-        {error}</Message> : (
+      {isLoading ? <Loader/> : error ? (<Message variant='danger'>
+        {error.data.message}</Message>
+        ) : (
           <Form onSubmit={submitHandler}>
             <Form.Group controlId='name' className='my-2'>
               <Form.Label>Name</Form.Label>

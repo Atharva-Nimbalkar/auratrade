@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 // import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 dotenv.config();
 import connectDB from './config/db.js';
 // import { notFound,errorHandler } from './middleware/errorMiddleware.js'; //error handling done in productContoller.js file
@@ -23,9 +24,9 @@ app.use(express.urlencoded({extended:true}));
 
 //cookie parser middleware
 app.use(cookieParser());
-app.get('/',(req,res)=>{
-    res.send('API is running');
-})
+// app.get('/',(req,res)=>{
+//     res.send('API is running');
+// })
 
 //following code is replaced by the code in productRoutes.js
 // app.get('/api/products',(req,res)=>{
@@ -40,6 +41,15 @@ app.get('/',(req,res)=>{
 app.get('/api/config/paypal',(req,res)=>{
     res.send({clientId: process.env.PAYPAL_CLIENT_ID});
 })
+
+
+const corsOptions = {
+    origin: ['http://localhost:3000','https://gadgets-nvgd.onrender.com/'],
+    credentials: true,
+};
+app.use(cors(corsOptions));
+
+
 app.use('/api/products',productRoutes);
 app.use('/api/users',userRoutes);
 app.use('/api/orders',orderRoutes);
@@ -47,19 +57,22 @@ app.use('/api/upload',uploadRoutes);
 // app.use(notFound);
 // app.use(errorHandler);
 
-const __dirname=path.resolve();//current directory name in which the file is present 
-app.use('/uploads',express.static(path.join(__dirname,'/uploads')));//make the uploads folder static so that it can be accessed by the frontend 
-
-if(process.env.NODE_ENV==='production'){//serve the static assets in production 
-    app.use(express.static(path.join(__dirname,'/frontend/build')));//set the static folder 
-    app.get('*',(req,res)=>res.sendFile(path.resolve(__dirname,'frontend','build','index.html'))//load the index.html file and send it to the client
+if (process.env.NODE_ENV === 'production') {
+    const __dirname = path.resolve();
+    app.use('/uploads', express.static(path.join(__dirname,'/uploads')));
+    app.use(express.static(path.join(__dirname, '/frontend/build')));
+  
+    app.get('*', (req, res) =>
+      res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
     );
-}
-else{//if not in production mode then run the node server in development mode 
-    app.get('/',(req,res)=>{
-        res.send('API is running');
-    })
-}
+  } else {
+    const __dirname = path.resolve();
+    app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+    app.get('/', (req, res) => {
+      res.send('API is running....');
+    });
+  }
+
 app.listen(port,()=>console.log(`server running on port ${port}`))
 
 
